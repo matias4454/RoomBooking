@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RoomBooking.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace RoomBooking
 {
@@ -25,7 +27,17 @@ namespace RoomBooking
         {
             services.AddControllersWithViews();
             services.AddDbContext<Data.RoomBookingsContext>();
-            services.AddAuthentication();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => 
+                {
+                    
+                    options.Cookie.IsEssential = true;                   
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+                    
+                    
+                    
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,12 +53,17 @@ namespace RoomBooking
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCookiePolicy(new CookiePolicyOptions 
+            { 
+                MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Strict 
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,4 +1,5 @@
-﻿GO
+﻿
+GO
 IF OBJECT_ID('RoomBookings.dbo.RoomUser') IS NOT NULL DROP TABLE RoomBookings.dbo.RoomUser;
 CREATE TABLE RoomBookings.dbo.RoomUser
 (
@@ -34,4 +35,20 @@ CREATE TABLE RoomBookings.dbo.Bookings
 );
 GO
 
+GO
+IF OBJECT_ID('RoomBookings.dbo.UserCred') IS NOT NULL DROP TABLE RoomBookings.dbo.UserCred;
+CREATE TABLE RoomBookings.dbo.UserCred 
+(
+    CredID INTEGER IDENTITY PRIMARY KEY
+	,UserID INTEGER NOT NULL
+	,CredHash NVARCHAR(512)
+	,CONSTRAINT FK_UserCred_RoomUser FOREIGN KEY (UserID)
+	    REFERENCES RoomBookings.dbo.RoomUser (UserID)
+
+);
+GO
+
 --IF OBJECT_ID('RoomBookings.dbo.RoomUser') IS NOT NULL DROP TABLE RoomBookings.dbo.RoomUser;
+--IF OBJECT_ID('RoomBookings.dbo.UserCred') IS NOT NULL DROP TABLE RoomBookings.dbo.UserCred;
+--SELECT * FROM RoomBookings.dbo.RoomUser
+--SELECT HASHBYTES('SHA1','testsecret');

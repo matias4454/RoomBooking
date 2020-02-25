@@ -10,18 +10,17 @@ using RoomBooking.Models;
 
 namespace RoomBooking.Controllers
 {
-    public class BookingsController : Controller
-    {
-        private readonly RoomBookingsContext _context;
+    public class BookingsController : BaseController //Controller
+    {        
 
-        public BookingsController(RoomBookingsContext context)
-        {
-            _context = context;
+        public BookingsController(RoomBookingsContext context) : base(context)
+        {            
         }
 
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
+            
             var roomBookingsContext = _context.Bookings.Include(b => b.Room).Include(b => b.RoomUser);
             return View(await roomBookingsContext.ToListAsync());
         }
@@ -29,6 +28,7 @@ namespace RoomBooking.Controllers
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -49,6 +49,7 @@ namespace RoomBooking.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
+            
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomName");
             ViewData["RoomUserId"] = new SelectList(_context.RoomUser, "UserId", "Email");
             return View();
@@ -61,6 +62,7 @@ namespace RoomBooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingId,StartTime,EndTime,RoomId,RoomUserId")] Bookings bookings)
         {
+            
             if (ModelState.IsValid)
             {
                 _context.Add(bookings);
@@ -75,6 +77,7 @@ namespace RoomBooking.Controllers
         // GET: Bookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -97,6 +100,7 @@ namespace RoomBooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BookingId,StartTime,EndTime,RoomId,RoomUserId")] Bookings bookings)
         {
+            
             if (id != bookings.BookingId)
             {
                 return NotFound();
@@ -126,10 +130,11 @@ namespace RoomBooking.Controllers
             ViewData["RoomUserId"] = new SelectList(_context.RoomUser, "UserId", "Email", bookings.RoomUserId);
             return View(bookings);
         }
-
+        
         // GET: Bookings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -152,6 +157,7 @@ namespace RoomBooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            
             var bookings = await _context.Bookings.FindAsync(id);
             _context.Bookings.Remove(bookings);
             await _context.SaveChangesAsync();

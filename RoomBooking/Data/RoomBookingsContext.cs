@@ -19,6 +19,7 @@ namespace RoomBooking.Data
         public virtual DbSet<Bookings> Bookings { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomUser> RoomUser { get; set; }
+        public virtual DbSet<UserCred> UserCred { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,7 +35,7 @@ namespace RoomBooking.Data
             modelBuilder.Entity<Bookings>(entity =>
             {
                 entity.HasKey(e => e.BookingId)
-                    .HasName("PK__Bookings__73951ACDF3050097");
+                    .HasName("PK__Bookings__73951ACD4E3D420A");
 
                 entity.HasIndex(e => new { e.StartTime, e.EndTime, e.RoomId })
                     .HasName("UN_Bookings")
@@ -69,11 +70,29 @@ namespace RoomBooking.Data
             modelBuilder.Entity<RoomUser>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__RoomUser__1788CCAC6FF6E18C");
+                    .HasName("PK__RoomUser__1788CCACEE717697");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.Property(e => e.Email).HasMaxLength(120);
+            });
+
+            modelBuilder.Entity<UserCred>(entity =>
+            {
+                entity.HasKey(e => e.CredId)
+                    .HasName("PK__UserCred__9417227D749A4436");
+
+                entity.Property(e => e.CredId).HasColumnName("CredID");
+
+                entity.Property(e => e.CredHash).HasMaxLength(512);
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserCred)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserCred_RoomUser");
             });
 
             OnModelCreatingPartial(modelBuilder);
