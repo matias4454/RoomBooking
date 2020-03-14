@@ -20,11 +20,27 @@ namespace RoomBooking.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            
-            var roomBookingsContext = _context.Bookings.Include(b => b.Room).Include(b => b.RoomUser);
-            return View(await roomBookingsContext.ToListAsync());
+            var rooms = await _context.Room
+                  .Where(r => r.RoomId > -1)
+                  .ToArrayAsync();
+            return  View(rooms);
         }
 
+        
+        public async Task<IActionResult> GetRoomBookings(int id) 
+        {
+
+            var ListItems = await _context.Bookings
+                                  .Include(b => b.Room)
+                                  .Include(b => b.RoomUser)
+                                  .Where(b => b.RoomId == id)
+                                  .ToListAsync();
+            List<BookingsListItem> items = BookingsListItem.CreateList(ListItems.ToArray());            
+            return View("ListItems", items);
+
+        }
+
+        /*
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -167,6 +183,6 @@ namespace RoomBooking.Controllers
         private bool BookingsExists(int id)
         {
             return _context.Bookings.Any(e => e.BookingId == id);
-        }
+        }*/
     }
 }

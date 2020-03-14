@@ -28,8 +28,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Index">Bookings</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="RoomSchedule" asp-action="Index">Room schedule</a>
+                        </li>
+                        <li class="nav-item">
                             @await Component.InvokeAsync("LoginPanel", null)
-                         </li>
+                        </li>
                     </ul>
                 </div>
             </div>

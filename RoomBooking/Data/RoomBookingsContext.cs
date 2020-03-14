@@ -99,5 +99,7 @@ namespace RoomBooking.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<RoomBooking.Models.BookingsListItem> BookingsListItem { get; set; }
     }
 }
