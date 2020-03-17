@@ -12,7 +12,7 @@ namespace RoomBooking.Models
         public static List<BookingsListItem> CreateList(Bookings[] data) 
         {
             List<BookingsListItem> listItems = new List<BookingsListItem>();
-
+            ;
             foreach (Bookings booking in data)
             {
                 var newItem = new BookingsListItem();

@@ -1,0 +1,26 @@
+﻿@model RoomBooking.Models.BookingsViewModel
+
+@{ 
+    var _next = new Dictionary<string, string>
+            {
+                { "id", Model.SelectedRoomId.ToString() },
+                { "selectedDate", ViewBag.NextDate }
+            };
+    var _prev = new Dictionary<string, string>
+            {
+                { "id", Model.SelectedRoomId.ToString() },
+                { "selectedDate", ViewBag.PrevDate }
+            };
+            
+
+}
+
+
+<div>
+    <p>
+        <a asp-action="GetRoomBookings" asp-all-route-data="_prev"><< Prev</a>
+        <a asp-action="GetRoomBookings" asp-all-route-data="_next">Next >></a>
+    </p>
+    @Html.DisplayNameFor(m => m.SelectedDate)
+    @ViewBag.SelectedDateStr
+</div>

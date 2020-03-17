@@ -27,16 +27,24 @@ namespace RoomBooking.Controllers
         }
 
         
-        public async Task<IActionResult> GetRoomBookings(int id) 
+        public IActionResult GetRoomBookings(int id, string selectedDate) 
         {
-
-            var ListItems = await _context.Bookings
-                                  .Include(b => b.Room)
-                                  .Include(b => b.RoomUser)
-                                  .Where(b => b.RoomId == id)
-                                  .ToListAsync();
-            List<BookingsListItem> items = BookingsListItem.CreateList(ListItems.ToArray());            
-            return View("ListItems", items);
+            DateTime date;
+            if (selectedDate != null)
+            {
+                date = Convert.ToDateTime(selectedDate);                
+            }
+            else 
+            {
+                var fstBooking = _context.Bookings
+                      .Where(b => b.RoomId == id)
+                      .OrderByDescending(b => b.StartTime)
+                      .FirstOrDefault();
+                date = fstBooking.StartTime;
+            }
+   
+            
+            return View("GetRoomBookings",new BookingsViewModel { SelectedDate = date, SelectedRoomId = id });
 
         }
 

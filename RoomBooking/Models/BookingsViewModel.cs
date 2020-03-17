@@ -7,6 +7,9 @@ namespace RoomBooking.Models
 {
     public class BookingsViewModel
     {
-        public List<BookingsListItem> Items { get; set; }
+        public int SelectedRoomId { get; set; }
+        public DateTime SelectedDate { get; set; }
+
+       // public List<BookingsListItem> Items { get; set; }
     }
 }

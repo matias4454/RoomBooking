@@ -1,0 +1,10 @@
+﻿@model RoomBooking.Models.BookingsViewModel
+@{
+    ViewData["Title"] = "GetRoomBookings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1> Room bookings</h1>
+<div>@await Component.InvokeAsync(typeof(RoomBooking.Components.DateSelectViewComponent), Model)</div>
+<div>@await Component.InvokeAsync(typeof(RoomBooking.Components.BookingsListViewComponent), Model)</div>
+
